@@ -1,5 +1,5 @@
 """
-2026.05.28 최연준작성 / AI: GitHub Copilot (GPT-5.3-Codex)
+2026.05.28 CYJ / AI: GitHub Copilot (GPT-5.3-Codex)
 DXF to KiCad Footprint 변환 GUI.
 
 용도:
