@@ -44,6 +44,7 @@ class ConverterTests(unittest.TestCase):
                 contents,
             )
             self.assertIn(
+                '(fp_arc (start 27 19) (mid 25.242641 23.242641) (end 21 25) '
                 '(stroke (width 0.15) (type solid)) (layer "F.SilkS"))',
                 contents,
             )

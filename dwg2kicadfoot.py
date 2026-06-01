@@ -8,9 +8,16 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Iterable, Iterator, List, Sequence
+from typing import Iterator, Sequence
 
 import ezdxf
+
+ODA_CONVERTER_CANDIDATES = (
+    "ODAFileConverter",
+    "ODAFileConverter.exe",
+    "TeighaFileConverter",
+    "TeighaFileConverter.exe",
+)
 
 
 def _fmt(value: float) -> str:
@@ -66,7 +73,7 @@ def _arc(center_x: float, center_y: float, radius: float, start_angle: float, en
 
 
 def _find_oda_converter() -> str | None:
-    candidates = [os.environ.get("ODA_FILE_CONVERTER"), "ODAFileConverter", "ODAFileConverter.exe", "TeighaFileConverter", "TeighaFileConverter.exe"]
+    candidates = [os.environ.get("ODA_FILE_CONVERTER"), *ODA_CONVERTER_CANDIDATES]
     for candidate in candidates:
         if not candidate:
             continue
@@ -119,9 +126,9 @@ def _iter_entities(entity) -> Iterator:
     yield entity
 
 
-def convert_file(input_path: Path, output_path: Path, module_name: str, layer: str = "F.SilkS", stroke_width: float = 0.15, scale: float = 1.0, offset_x: float = 0.0, offset_y: float = 0.0, description: str | None = None) -> List[str]:
-    warnings: List[str] = []
-    graphics: List[str] = []
+def convert_file(input_path: Path, output_path: Path, module_name: str, layer: str = "F.SilkS", stroke_width: float = 0.15, scale: float = 1.0, offset_x: float = 0.0, offset_y: float = 0.0, description: str | None = None) -> list[str]:
+    warnings: list[str] = []
+    graphics: list[str] = []
 
     with tempfile.TemporaryDirectory(prefix="dwg2kicadfoot-") as temp_name:
         resolved_input = input_path
@@ -204,7 +211,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             offset_y=args.offset_y,
             description=args.description,
         )
-    except Exception as exc:  # pragma: no cover - CLI error handling
+    except (RuntimeError, FileNotFoundError, OSError, ezdxf.DXFError) as exc:  # pragma: no cover - CLI error handling
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 
