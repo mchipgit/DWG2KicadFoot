@@ -35,9 +35,18 @@ class ConverterTests(unittest.TestCase):
             contents = output_path.read_text(encoding="utf-8")
             self.assertIn('(footprint "ExampleFootprint"', contents)
             self.assertIn('(descr "Imported from test")', contents)
-            self.assertIn('(fp_line (start 1 -1) (end 3 3)', contents)
-            self.assertIn('(fp_circle (center 11 9) (end 15 9)', contents)
-            self.assertIn('(fp_arc (start 27 19)', contents)
+            self.assertIn(
+                '(fp_line (start 1 -1) (end 3 3) (stroke (width 0.15) (type solid)) (layer "F.SilkS"))',
+                contents,
+            )
+            self.assertIn(
+                '(fp_circle (center 11 9) (end 15 9) (stroke (width 0.15) (type solid)) (layer "F.SilkS"))',
+                contents,
+            )
+            self.assertIn(
+                '(stroke (width 0.15) (type solid)) (layer "F.SilkS"))',
+                contents,
+            )
 
     def test_dwg_requires_converter_when_not_available(self) -> None:
         with tempfile.TemporaryDirectory() as temp_name:

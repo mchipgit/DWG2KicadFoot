@@ -23,7 +23,7 @@ def _point(x: float, y: float, scale: float, offset_x: float, offset_y: float) -
 
 
 def _stroke(layer: str, stroke_width: float) -> str:
-    return f'(stroke (width {_fmt(stroke_width)}) (type solid)) (layer {layer})'
+    return f'(stroke (width {_fmt(stroke_width)}) (type solid)) (layer "{layer}")'
 
 
 def _line(start: tuple[float, float], end: tuple[float, float], layer: str, stroke_width: float) -> str:
